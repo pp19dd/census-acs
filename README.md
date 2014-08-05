@@ -27,4 +27,6 @@ Usage examples:
 
 Because these CSV files decompress to about 20 gigabytes, you can create and use a reduced set.
 
-`./acs.php filter="SEX=2" output=male` - will create a male folder, and place all surveyed male records into it.
+`./acs.php filter="SEX=1" output=male` - will create a male folder, and place all surveyed male records into it.
+
+When querying that dataset, do `./acs.php input=male count=ENG`
