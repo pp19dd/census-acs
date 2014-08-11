@@ -139,7 +139,7 @@ th { }
                 $hrow[] = $key2;
             }
         }
-        echo implode(",\t", $hrow ) . "\n";
+        echo implode(",", $hrow ) . "\n";
 
         foreach( $this->counters as $state => $keys ) {
             $row = array();
@@ -150,7 +150,7 @@ th { }
 
                 }
             }
-            echo implode(",\t", $row) . "\n";
+            echo implode(",", $row) . "\n";
             unset( $row );
         }
     }
