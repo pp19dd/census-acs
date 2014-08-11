@@ -131,7 +131,7 @@ th { }
     function output_csv() {
     
         global $argv;
-        echo implode(" ", $argv) . "\n\n";
+        echo "\"" . implode(" ", $argv) . "\"\n\n";
         
         $hrow = array(" ");
         foreach( $this->expected_uniques as $key => $uniques ) {
@@ -139,7 +139,7 @@ th { }
                 $hrow[] = $key2;
             }
         }
-        echo implode("\t", $hrow ) . "\n";
+        echo implode(",\t", $hrow ) . "\n";
 
         foreach( $this->counters as $state => $keys ) {
             $row = array();
@@ -150,7 +150,7 @@ th { }
 
                 }
             }
-            echo implode("\t", $row) . "\n";
+            echo implode(",\t", $row) . "\n";
             unset( $row );
         }
     }

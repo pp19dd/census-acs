@@ -2,7 +2,7 @@
 
 class acs5_argv {
 
-    function usage($argv) {
+    function usage($argv = array()) {
         $f = $argv[0];
         
         echo "\n";
@@ -25,7 +25,7 @@ class acs5_argv {
         
         if( $argc > 1 ) {
             $set = strtolower($argv[1]);
-            if( $set != "p" && $set != "h" ) acs5_argv::usage();
+            if( $set != "p" && $set != "h" ) acs5_argv::usage($argv);
             $files = glob("data/ss12{$set}*.csv");
         } else {
             acs5_argv::usage($argv);
@@ -47,7 +47,7 @@ class acs5_argv {
     
     function parse_filter($value) {
         // cases: ENG>2  ENG <2  ENG >= 23 ENG <= 24
-        $m = preg_match("/(.*?)([<=|>=|=|<|>]+)(.*)/i", $value, $r);
+        $m = preg_match("/(.*?)([<=|>=|=|<|>|,]+)(.*)/i", $value, $r);
         
         // cases: ENG=2,3
         if( stripos($r[3], ",") !== false ) $r[3] = explode(",", $r[3]);

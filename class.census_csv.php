@@ -67,6 +67,39 @@ class acs5_filter {
 // simple frequency counter
 // ===========================================================================
 class acs5_counter extends acs5_filter {
+    function incval($k) {
+        if( !isset( $this->counts[$k] ) ) {
+            $this->counts[$k] = 0;
+        }
+        $this->counts[$k]++;
+    }
+    
+    function getval(&$row) {
+        $num = $this->key_to_num($this->key);
+        $this->val = $row[$num-1];
+    }
+    
+    function evaluate($row) {
+        /*
+        $num = $this->key_to_num($this->key);
+        $this->val = $row[$num-1];
+        */
+        $this->getval($row);
+        $this->incval( $this->val);
+        
+        /*
+        if( !isset( $this->counts[$this->val] ) ) {
+            $this->counts[$this->val] = 0;
+        }
+        $this->counts[$this->val]++;
+        */
+    }
+}
+
+// ===========================================================================
+// grouped counter (age group, ...)
+// ===========================================================================
+class acs5_group_counter extends acs5_counter {
     function evaluate($row) {
         $num = $this->key_to_num($this->key);
         $this->val = $row[$num-1];

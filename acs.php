@@ -76,6 +76,14 @@ foreach( $files as $file ) {
                 $demo->setCounter( new acs5_counter($value) );
             break;
             
+            case 'group':
+                var_dump( $directive );
+                var_dump( $value );
+                $r = acs5_argv::parse_filter($value);
+                //$demo->setGrouping($r);
+                die("feature incomplete");
+            break;
+            
             case 'filter':
                 $r = acs5_argv::parse_filter($value);
                 $demo->setFilter( new acs5_filter(
