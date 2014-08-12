@@ -77,11 +77,8 @@ foreach( $files as $file ) {
             break;
             
             case 'group':
-                var_dump( $directive );
-                var_dump( $value );
                 $r = acs5_argv::parse_filter($value);
-                //$demo->setGrouping($r);
-                die("feature incomplete");
+                $demo->setGrouping($r);
             break;
             
             case 'filter':

@@ -44,7 +44,7 @@ class acs5_filter {
         return( false );
     }
     
-    function evaluate($row) {
+    function evaluate($row, $grouping = array()) {
         $num = $this->key_to_num($this->key);
         $act = trim($row[$num-1]);
         
@@ -79,35 +79,20 @@ class acs5_counter extends acs5_filter {
         $this->val = $row[$num-1];
     }
     
-    function evaluate($row) {
-        /*
-        $num = $this->key_to_num($this->key);
-        $this->val = $row[$num-1];
-        */
+    function evaluate($row, $grouping = array()) {
         $this->getval($row);
+        if( isset($grouping[$this->key]) ) {
+            #echo $this->key;
+            $parm = $grouping[$this->key];
+            
+            if( is_array($parm)) {
+            
+            } else {
+                $step_size = intval($parm);
+                $this->val = intval($this->val / $step_size);
+            }
+        }
         $this->incval( $this->val);
-        
-        /*
-        if( !isset( $this->counts[$this->val] ) ) {
-            $this->counts[$this->val] = 0;
-        }
-        $this->counts[$this->val]++;
-        */
-    }
-}
-
-// ===========================================================================
-// grouped counter (age group, ...)
-// ===========================================================================
-class acs5_group_counter extends acs5_counter {
-    function evaluate($row) {
-        $num = $this->key_to_num($this->key);
-        $this->val = $row[$num-1];
-        
-        if( !isset( $this->counts[$this->val] ) ) {
-            $this->counts[$this->val] = 0;
-        }
-        $this->counts[$this->val]++;
     }
 }
 
@@ -124,6 +109,7 @@ class acs5_file {
     var $counters = array();
     var $debug = false;
     var $limit = 0;
+    var $grouping = array();
     
     function __construct( $filename ) {
         $this->filename = $filename;
@@ -151,6 +137,12 @@ class acs5_file {
     function setFilter($f) {
         $f->csv_headers = $this->csv_headers;
         array_push( $this->filters, $f );
+    }
+
+// $r variant 1:  [key] => AGEP       [operator] => ,     [value] => 5
+// $r variant 2:  [value] => Array([0] => 0-20  [1] => 21-30   [2] => 51
+    function setGrouping($r) {
+        $this->grouping[$r["key"]] = $r["value"];
     }
     
     function setCounter($c) {
@@ -186,7 +178,7 @@ class acs5_file {
             
             // any non-skipped rows get counted
             foreach( $this->counters as $counter ) {
-                $counter->evaluate($r);
+                $counter->evaluate($r, $this->grouping);
             }
             
             // limit # of rows, for debugging purposes
