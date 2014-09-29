@@ -25,6 +25,13 @@ class acs5_filter {
         $this->key = $key;
         $this->oper = $operator;
         $this->val = $value;
+        
+        $this->before();
+    }
+    
+    // convenient hook for a first-run
+    function before() {
+    
     }
     
     function key_to_num($k) {
@@ -93,6 +100,46 @@ class acs5_counter extends acs5_filter {
             }
         }
         $this->incval( $this->val);
+    }
+}
+
+// ===========================================================================
+// helper, measures column for field type/size
+// ===========================================================================
+class acs5_counter_test extends acs5_counter {
+    function before() {
+        $this->counts["min_value"] = PHP_INT_MAX;
+        $this->counts["max_value"] = 0;
+        
+        $this->counts["min_length"] = PHP_INT_MAX;
+        $this->counts["max_length"] = 0;
+        
+        $this->counts["is_empty"] = 0;
+        $this->counts["is_numeric"] = 0;
+        $this->counts["is_string"] = 0;
+    }
+    
+    function evaluate($row, $grouping = array()) {
+        $this->getval($row);
+
+        // animal, vegetable or mineral?
+        if( empty($this->val) ) {
+            $this->incval("is_empty");
+        } else {
+            if( is_numeric($this->val) ) {
+                $this->incval("is_numeric");
+            } else {
+                $this->incval("is_string");
+            }
+        }
+        
+        if( $this->val < $this->counts["min_value"] ) $this->counts["min_value"] = $this->val;
+        if( $this->val > $this->counts["max_value"] ) $this->counts["max_value"] = $this->val;
+        
+        $len = strlen(trim($this->val));
+        if( $len < $this->counts["min_length"] ) $this->counts["min_length"] = $len;
+        if( $len > $this->counts["max_length"] ) $this->counts["max_length"] = $len;
+        
     }
 }
 

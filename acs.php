@@ -76,6 +76,10 @@ foreach( $files as $file ) {
                 $demo->setCounter( new acs5_counter($value) );
             break;
             
+            case 'test':
+                $demo->setCounter( new acs5_counter_test($value) );
+            break;
+            
             case 'group':
                 $r = acs5_argv::parse_filter($value);
                 $demo->setGrouping($r);
