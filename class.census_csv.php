@@ -108,11 +108,11 @@ class acs5_counter extends acs5_filter {
 // ===========================================================================
 class acs5_counter_test extends acs5_counter {
     function before() {
-        $this->counts["min_value"] = PHP_INT_MAX;
-        $this->counts["max_value"] = 0;
+        $this->counts["min_value"] =  100000;
+        $this->counts["max_value"] = -100000;
         
-        $this->counts["min_length"] = PHP_INT_MAX;
-        $this->counts["max_length"] = 0;
+        $this->counts["min_length"] =  100000;
+        $this->counts["max_length"] = -100000;
         
         $this->counts["is_empty"] = 0;
         $this->counts["is_numeric"] = 0;
@@ -133,12 +133,13 @@ class acs5_counter_test extends acs5_counter {
             }
         }
         
-        if( $this->val < $this->counts["min_value"] ) $this->counts["min_value"] = $this->val;
-        if( $this->val > $this->counts["max_value"] ) $this->counts["max_value"] = $this->val;
-        
         $len = strlen(trim($this->val));
         if( $len < $this->counts["min_length"] ) $this->counts["min_length"] = $len;
         if( $len > $this->counts["max_length"] ) $this->counts["max_length"] = $len;
+        
+        $this->val = intval($this->val);
+        if( $this->val < $this->counts["min_value"] ) $this->counts["min_value"] = $this->val;
+        if( $this->val > $this->counts["max_value"] ) $this->counts["max_value"] = $this->val;
         
     }
 }

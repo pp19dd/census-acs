@@ -8,6 +8,7 @@ class spanner {
     var $counters = array();
     var $expected_uniques = array();
     var $format = "html";
+    var $sort = true;
     
     function addCounters($state, $counters) {
         foreach( $counters as $counter ) {
@@ -35,7 +36,7 @@ class spanner {
                 #$uniques[$value]++;
             }
         }
-        ksort( $uniques );
+        if( $this->sort === true ) ksort( $uniques );
         return( $uniques );
     }
     
@@ -61,7 +62,7 @@ class spanner {
                     $values + 
                     $this->expected_uniques[$key];
 
-                ksort( $this->counters[$state][$key] );
+                if( $this->sort === true ) ksort( $this->counters[$state][$key] );
             }
         }
     }

@@ -77,6 +77,7 @@ foreach( $files as $file ) {
             break;
             
             case 'test':
+                $spanner->sort = false;
                 $demo->setCounter( new acs5_counter_test($value) );
             break;
             
